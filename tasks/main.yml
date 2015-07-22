@@ -1,0 +1,21 @@
+---
+# tasks file for koji-kojira
+
+- name: Main | Install required packages
+  yum: name={{item}} state=installed
+  with_items:
+    - koji-utils
+  tags:
+    - kojira
+
+- name: Configure /etc/kojira/kojira.conf
+  template: src=kojira.conf.j2 dest=/etc/kojira/kojira.conf owner=root group=root mode=0644
+  notify:
+    - restart kojira  
+  tags:
+    - kojira
+
+- name: "Ensure kojira is running"
+  service: name=kojira state=started enabled=yes
+  tags:
+    - kojira
