@@ -19,3 +19,13 @@
   service: name=kojira state=started enabled=yes
   tags:
     - kojira
+
+- name: Grant repo permission to kojira
+  su: yes
+  su_user: kojiadmin
+  shell: "/usr/bin/koji grant-permission repo kojira && touch /home/kojiadmin/.koji/.grant-kojira.done"
+  args:
+    creates: /home/kojiadmin/.koji/.grant-kojira.done
+  when: koji_kojira_grant_repo
+  tags:
+    - kojira-grant
