@@ -1,17 +1,50 @@
 Role Name
 =========
 
-Docs are coming soon for now just visit https://github.com/kostyrevaa/ansible-koji-infra
+ This role installs and configures the kojira.
+
+ This is one of the koji- roles which configures whole koji stack.
+
+Roles are:
+
+ * koji-db (https://galaxy.ansible.com/list#/roles/4459)
+ * koji-ca (https://galaxy.ansible.com/list#/roles/4460)
+ * koji-web (https://galaxy.ansible.com/list#/roles/4456)
+ * koji-kojira (https://galaxy.ansible.com/list#/roles/4457)
+ * koji-builder (https://galaxy.ansible.com/list#/roles/4461)
+ * koji-hub (https://galaxy.ansible.com/list#/roles/4462)
+
+For example of all-in-one setup go to https://github.com/kostyrevaa/ansible-koji-infra
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role will work on:
+
+ * Red Hat 6
+ * CentOS 6
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+There are some variables in the default/main.yml which can (or needs to) be changed/overriden:
+
+* `koji_kojira_user`: Same as in cert's CN. Default is kojira.
+
+* `koji_kojira_hub_server`: This is the url of koji hub. Default uses var from koji-builder.
+
+* `koji_kojira_topdir`: This is topdir of the koji. Default is /mnt/koji.
+
+* `koji_builder_topurl`: This is the url of kojifiles. Default uses hostvars discover.
+
+* `koji_kojira_cert`: This is the client certificate of kojira user. Default is /etc/pki/koji/pems/kojira.pem.
+
+* `koji_kojira_ca`: This is the certificate of the CA that issued the client certificate. Default is /etc/pki/koji/koji_ca_cert.crt.
+
+* `koji_kojira_serverca`: This is the certificate of the CA that issued the HTTP server certificate. Default is /etc/pki/koji/koji_ca_cert.crt.
+
+* `koji_kojira_grant_repo`: Should this role attempt to execute shell command that grants kojira repo permission. If this is a all-in-one setup put true. Default is false.
+
 
 Dependencies
 ------------
@@ -23,16 +56,21 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
+    - hosts: koji_builder
       roles:
-         - { role: username.rolename, x: 42 }
+         - koji-builder
+         - koji-kojira
 
 License
 -------
 
-BSD
+GPLv3
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+ Send your suggestions and pull requests to https://github.com/kostyrevaa/ansible-koji-kojira.
+
+ When send PR make sure your changes are backward-compatible.
+
+ Test your changes to role with https://github.com/kostyrevaa/ansible-koji-infra
