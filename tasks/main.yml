@@ -21,8 +21,8 @@
     - kojira
 
 - name: Grant repo permission to kojira
-  su: yes
-  su_user: kojiadmin
+  become: yes
+  become_user: kojiadmin
   shell: "/usr/bin/koji grant-permission repo kojira && touch /home/kojiadmin/.koji/.grant-kojira.done"
   args:
     creates: /home/kojiadmin/.koji/.grant-kojira.done
