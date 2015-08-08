@@ -45,6 +45,8 @@ There are some variables in the default/main.yml which can (or needs to) be chan
 
 * `koji_kojira_grant_repo`: Should this role attempt to execute shell command that grants kojira repo permission. If this is a all-in-one setup put true. Default is false.
 
+* `koji_kojira_issue_cert`: Should this role attempt to issue cert for kojira. If this is a all-in-one setup set it to true. Default is false.
+
 
 Dependencies
 ------------
@@ -58,8 +60,8 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: koji_builder
       roles:
-         - koji-builder
-         - koji-kojira
+         - kostyrevaa.koji-builder
+         - kostyrevaa.koji-kojira
 
 License
 -------
