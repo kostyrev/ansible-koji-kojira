@@ -15,6 +15,15 @@
   tags:
     - kojira
 
+- name: issue cert for kojira
+  shell: "{{ ca_root_path }}/certgen.sh kojira"
+  args:
+    creates: "{{ ca_root_path }}/certs/kojira.crt"
+    chdir: "{{ ca_root_path }}"
+  when: koji_kojira_issue_cert
+  tags:
+    - kojira
+
 - name: "Ensure kojira is running"
   service: name=kojira state=started enabled=yes
   tags:
