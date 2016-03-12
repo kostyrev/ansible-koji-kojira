@@ -13,8 +13,9 @@ koji_kojira_keytab: /etc/kojira/kojira.keytab
 koji_kojira_krbservice: host   
 koji_kojira_cert: "/etc/pki/koji/pems/kojira.pem"
 koji_kojira_ca: /etc/pki/koji/koji_ca_cert.crt
-koji_kojira_serverca: /etc/pki/koji/koji_ca_cert.crt
+koji_kojira_serverca: "{{ koji_kojira_ca }}"
 
 # by default do not execute shell command that grants kojira repo permission
 koji_kojira_grant_repo: False
 koji_kojira_issue_cert: False
+koji_kojira_ca_base_path: /etc/pki/koji

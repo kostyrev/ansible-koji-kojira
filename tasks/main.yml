@@ -2,32 +2,52 @@
 # tasks file for koji-kojira
 
 - name: Main | Install required packages
-  yum: name={{item}} state=installed
+  package:
+    name: "{{ item }}"
+    state: present
   with_items:
     - koji-utils
   tags:
     - kojira
+    - kojira-package
 
 - name: Configure /etc/kojira/kojira.conf
-  template: src=kojira.conf.j2 dest=/etc/kojira/kojira.conf owner=root group=root mode=0644
+  template:
+    src: kojira.conf.j2
+    dest: /etc/kojira/kojira.conf
+    owner: root
+    group: root
+    mode: 0644
   notify:
     - restart kojira  
   tags:
     - kojira
 
 - name: issue cert for kojira
-  shell: "{{ ca_root_path }}/certgen.sh kojira"
+  shell: "{{ koji_kojira_ca_base_path }}/certgen.sh kojira"
   args:
-    creates: "{{ ca_root_path }}/certs/kojira.crt"
-    chdir: "{{ ca_root_path }}"
+    creates: "{{ koji_kojira_ca_base_path }}/certs/kojira.crt"
+    chdir: "{{ koji_kojira_ca_base_path }}"
   when: koji_kojira_issue_cert
   tags:
     - kojira
 
+- include: check_certificates.yml
+  vars:
+    cert_file: "{{ item }}"
+  with_items:
+    - "{{ koji_kojira_cert }}"
+    - "{{ koji_kojira_ca }}"
+    - "{{ koji_kojira_serverca }}"
+
 - name: "Ensure kojira is running"
-  service: name=kojira state=started enabled=yes
+  service:
+    name: kojira
+    state: started
+    enabled: yes
   tags:
     - kojira
+    - koji-service
 
 - name: Grant repo permission to kojira
   become: yes
