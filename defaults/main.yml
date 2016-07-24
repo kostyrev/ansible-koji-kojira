@@ -1,6 +1,6 @@
 ---
 # defaults file for koji-kojira
-koji_kojira_package: koji-utils-1.10.1-1.el7.centos
+koji_kojira_package: koji-utils
 koji_kojira_user: kojira   
 koji_kojira_password: kojira   
 koji_kojira_principal: koji/repo@EXAMPLE.COM   
