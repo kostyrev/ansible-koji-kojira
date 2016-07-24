@@ -1,12 +1,10 @@
 ---
 # tasks file for koji-kojira
 
-- name: Main | Install required packages
+- name: Main | Install {{ koji_kojira_package }}
   package:
-    name: "{{ item }}"
+    name: "{{ koji_kojira_package }}"
     state: present
-  with_items:
-    - koji-utils
   tags:
     - kojira
     - kojira-package
